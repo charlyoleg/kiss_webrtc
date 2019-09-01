@@ -1,0 +1,57 @@
+{
+  "name": "kiss_webrtc",
+  "version": "1.0.0",
+  "description": "Sand-box for WebRTC",
+  "main": "srv/dist/index.js",
+  "scripts": {
+    "clean_web": "rm -fr web/dist",
+    "build_web_html": "pug --pretty --out web/dist/ web/pug/index.pug",
+    "build_web_js": "tsc --project web/ts",
+    "build_web_css": "sass web/sass/kiss_webrtc_style.scss web/dist/css/kiss_webrtc_style.css",
+    "build_web": "run-p -l build_web_html build_web_js build_web_css",
+    "serve_web": "live-server web/dist",
+    "start": "run-s clean_web build_web serve_web",
+    "create_certificate": "srv/create_a_self_signed_certificate.sh",
+    "clean_srv": "rm -fr srv/dist",
+    "build_srv_js": "tsc -p srv",
+    "build_srv_cp_html": "cpx web/dist/index.html srv/dist/",
+    "build_srv_cp_css": "cpx web/dist/css/kiss_webrtc_style.css srv/dist/",
+    "build_srv_cp_js": "cpx web/dist/js/kiss_webrtc.js srv/dist/",
+    "build_srv_cp": "run-p -l build_srv_cp_html build_srv_cp_css build_srv_cp_js",
+    "build_srv": "run-s build_srv_js build_srv_cp",
+    "serve": "node srv/dist/index.js",
+    "resrv_html_ws": "run-s clean_web build_web clean_srv build_srv serve",
+    "resrv_ws": "run-s clean_srv build_srv_js serve",
+    "clean_client_js": "rm -fr client_js/dist",
+    "build_client_js": "tsc -p client_js",
+    "run_client_js": "node client_js/dist/client.js",
+    "rerun_client_js": "run-s clean_client_js build_client_js run_client_js",
+    "install_py": "PIPENV_VENV_IN_PROJECT=1 pipenv install",
+    "run_client_py": "pipenv run client_py/client.py",
+    "run_client_requests_only_py": "pipenv run client_py/client_requests_only.py",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/charlyoleg/kiss_webrtc.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/charlyoleg/kiss_webrtc/issues"
+  },
+  "homepage": "https://github.com/charlyoleg/kiss_webrtc#readme",
+  "dependencies": {
+    "@types/body-parser": "^1.17.1",
+    "@types/express": "^4.17.1",
+    "axios": "^0.19.0",
+    "body-parser": "^1.19.0",
+    "cpx": "^1.5.0",
+    "express": "^4.17.1",
+    "live-server": "^1.2.1",
+    "npm-run-all": "^4.1.5",
+    "pug-cli": "^1.0.0-alpha6",
+    "sass": "^1.22.10",
+    "typescript": "^3.6.2"
+  }
+}
